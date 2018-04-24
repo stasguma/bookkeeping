@@ -20,27 +20,55 @@ export class HistoryDetailComponent implements OnInit, OnDestroy {
     ) {}
 
     sub1: Subscription;
+    sub2: Subscription;
     category: Category;
+    filteredEvent: NPEvent[];
     event: NPEvent;
+    events: NPEvent[];
     isLoaded = false;
 
     ngOnInit() {
-        this.sub1 = this.route.params
-            .mergeMap((params: Params) => this.eventsService.getEventById(params['id']))
-            .mergeMap((event: NPEvent) => {
-                this.event = event;
+        this.sub1 = this.eventsService.getEvents()
+            .subscribe((events: NPEvent[]) => {
+                this.events = events;
 
-                return this.categoriesService.getCategoryById(event.category);
+                this.sub2 = this.route.params
+                    .map((params: Params) => {
+                        return this.filteredEvent = this.events.filter((e) => {
+                            return e.id === +params['id']
+                        });
+
+                    })
+                    .mergeMap((event: NPEvent[]) => {
+                        this.event = this.filteredEvent[0];
+                        console.log('event', this.event);
+                        return this.categoriesService.getCategoryById(this.event.category);
+                    })
+                    .subscribe((category: Category) => {
+                        console.log('category', category);
+                        this.category = category;
+                        this.isLoaded = true;
+                    });
             })
-            .subscribe((category: Category) => {
-                this.category = category;
-                this.isLoaded = true;
-            })
+        // this.sub1 = this.route.params
+        //     .mergeMap((params: Params) => this.eventsService.getEventById(params['id']))
+        //     .mergeMap((event: NPEvent) => {
+        //         this.event = event;
+        //
+        //         return this.categoriesService.getCategoryById(event.category);
+        //     })
+        //     .subscribe((category: Category) => {
+        //         this.category = category;
+        //         this.isLoaded = true;
+        //     })
     }
 
     ngOnDestroy() {
         if (this.sub1) {
             this.sub1.unsubscribe();
+        }
+        if (this.sub2) {
+            this.sub2.unsubscribe();
         }
     }
 }

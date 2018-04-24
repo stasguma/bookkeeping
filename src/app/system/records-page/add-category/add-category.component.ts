@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -13,7 +13,8 @@ import { Category } from './../../shared/models/category.model';
 export class AddCategoryComponent implements OnDestroy {
     sub1: Subscription;
 
-    @Output() onCategoryAdd: EventEmitter<Category> = new EventEmitter();
+    @Input() categories: Category[] = [];
+    // @Output() onCategoryAdd: EventEmitter<Category> = new EventEmitter();
 
     constructor(private categoriesService: CategoriesService) { }
 
@@ -24,14 +25,16 @@ export class AddCategoryComponent implements OnDestroy {
             capacity *= -1;
         }
 
-        const category = new Category(name, capacity);
+        const id = this.categories.length + 1,
+              key = null,
+              category = new Category(name, capacity, id, key);
 
         this.sub1 = this.categoriesService.addCategory(category)
             .subscribe( (category: Category) => {
                 form.reset();
                 form.form.patchValue({capacity: 1});
 
-                this.onCategoryAdd.emit(category);
+                // this.onCategoryAdd.emit(category);
             });
     }
 

@@ -15,7 +15,7 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
     sub1: Subscription;
 
     @Input() categories: Category[] = [];
-    @Output() onCategoryEdit: EventEmitter<Category> = new EventEmitter();
+    // @Output() onCategoryEdit: EventEmitter<Category> = new EventEmitter();
 
     currentCategoryId = 1;
     currentCategory: Category;
@@ -40,14 +40,13 @@ export class EditCategoryComponent implements OnInit, OnDestroy {
             capacity *= -1;
         }
 
-        const category = new Category(name, capacity, +this.currentCategoryId);
+        const key = this.currentCategory.key || null;
+        const category = new Category(name, capacity, +this.currentCategoryId, key);
 
         this.sub1 = this.categoriesService.updateCategory(category)
             .subscribe( (category: Category) => {
-                this.onCategoryEdit.emit(category);
-
+                // this.onCategoryEdit.emit(category);
                 this.message.text = "Категория успешно отредактирована";
-
                 window.setTimeout( () => this.message.text = '', 5000);
             });
     }

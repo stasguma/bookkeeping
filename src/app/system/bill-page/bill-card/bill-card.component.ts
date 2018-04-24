@@ -12,7 +12,7 @@ export class BillCardComponent implements OnInit {
     @Input() currency: any;
 
     dollar: number;
-    euro: number;
+    gbp: number;
 
     constructor() { }
 
@@ -20,7 +20,7 @@ export class BillCardComponent implements OnInit {
         const { rates } = this.currency;
 
         this.dollar = rates['USD'] * this.bill.value;
-        this.euro = rates['EUR'] * this.bill.value;
+        this.gbp = rates['GBP'] * this.bill.value;
     }
 
 }

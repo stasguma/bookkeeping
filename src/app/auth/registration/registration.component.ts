@@ -42,11 +42,13 @@ export class RegistrationComponent implements OnInit {
     }
 
     onSubmit() {
+        const id = parseInt((Math.random() * 50).toFixed(), 10);
         const { email, password, name } = this.form.value;
-        const user = new User(email, password, name);
+        const user = new User( email, password, name, id );
 
         this.usersService.createNewUser(user)
-            .subscribe( (user: User) => {
+            .subscribe( (user: User[]) => {
+                console.log('user', user);
                 this.router.navigate(['/login'], {
                     queryParams: {
                         nowCanLogin: true

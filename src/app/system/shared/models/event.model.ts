@@ -6,6 +6,7 @@ export class NPEvent {
         public date: string,
         public description: string,
         public id?: number,
-        public catName?: string
+        public catName?: string,
+        public key?: string
     ) {}
 }

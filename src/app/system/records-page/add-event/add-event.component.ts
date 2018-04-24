@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 
 import { Category } from './../../shared/models/category.model';
-import { NPEvent} from './../../shared/models/event.model';
+import { NPEvent } from './../../shared/models/event.model';
 import { EventsService} from './../../shared/services/events.service';
 import { BillService} from './../../shared/services/bill.service';
 import { Bill } from './../../shared/models/bill.model';
@@ -18,10 +18,11 @@ import { Message } from './../../../shared/models/message.model';
 export class AddEventComponent implements OnInit, OnDestroy {
     @Input() categories: Category[] = [];
 
+    events: NPEvent[];
     types = [
         {type: 'income', label: 'Доход'},
         {type: 'outcome', label: 'Расход'}
-    ]
+    ];
     message: Message;
     sub1: Subscription;
     sub2: Subscription;
@@ -33,6 +34,10 @@ export class AddEventComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.message = new Message('danger', '');
+
+        this.eventsService.getEvents()
+            .subscribe( (events: NPEvent[]) => this.events = events );
+
     }
 
     private showMessage(text: string) {
@@ -47,12 +52,16 @@ export class AddEventComponent implements OnInit, OnDestroy {
             amount *= -1;
         }
 
+        const id: number = this.events.length + 1,
+              catName = null,
+              key = null;
+
         const event = new NPEvent(
             type, amount, +category,
-            moment().format('DD.MM.YYY HH:mm:ss'), description
+            moment().format('DD.MM.YYY HH:mm:ss'), description, id, catName, key
         );
 
-        this.sub1 = this.billService.getBill()
+        this.sub1 = this.billService.getBill().first()
             .subscribe( (bill: Bill) => {
                 let value = 0;
 

@@ -14,7 +14,7 @@
             <np-add-event [categories]="categories"></np-add-event>
         </div>
         <div class="col-md-6">
-            <np-add-category (onCategoryAdd)="newCategoryAdded($event)"></np-add-category>
+            <np-add-category [categories]="categories" (onCategoryAdd)="newCategoryAdded($event)"></np-add-category>
         </div>
     </div>
     <div class="row">
