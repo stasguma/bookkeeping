@@ -30,10 +30,10 @@ export class BillService {
         return this.billRef;
     }
 
-    getCurrency(base: string = "RUB"): Observable<any> {
+    getCurrency(base: string = "EUR"): Observable<any> {
         return this.http
-          // .get(`https://api.fixer.io/latest?base=${base}`)
-          .get(`http://data.fixer.io/api/latest?access_key=e2284628c406198445c817a4fa3725f8`)
+          .get(`https://api.fixer.io/latest?base=${base}`)
+          // .get(`http://data.fixer.io/api/latest?access_key=e2284628c406198445c817a4fa3725f8`)
           .map((res: Response) => res.json());
     }
 }

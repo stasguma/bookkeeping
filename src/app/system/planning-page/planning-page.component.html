@@ -15,7 +15,7 @@
                         <h3 class="title">Расходы</h3>
                     </div>
                     <h5 class="planning-expenses pull-right">
-                        Общий остаток: <span class="text-success">{{ bill.value | number:'1.2'}} P</span>
+                        Общий остаток: <span class="text-success">{{ bill.value | number:'1.2'}} €</span>
                     </h5>
                 </div>
                 <div class="card-block">
@@ -33,7 +33,7 @@
                                 из
                                 <span class="text-primary">{{ cat.capacity | number:'1.2' }}</span>
                                 |
-                                осталось <span class="text-{{ getCatColorClass(cat) }}">{{ cat.capacity - getCategoryCost(cat) | number: '1.2' }}</span> (руб.)
+                                осталось <span class="text-{{ getCatColorClass(cat) }}">{{ cat.capacity - getCategoryCost(cat) | number: '1.2' }}</span> €
                             </p>
                         </div>
                     </div>

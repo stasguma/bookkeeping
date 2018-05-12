@@ -58,7 +58,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
 
         const event = new NPEvent(
             type, amount, +category,
-            moment().format('DD.MM.YYY HH:mm:ss'), description, id, catName, key
+            moment().format('DD.MM.YYYY HH:mm:ss'), description, id, catName, key
         );
 
         this.sub1 = this.billService.getBill().first()
