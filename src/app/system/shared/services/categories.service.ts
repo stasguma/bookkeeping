@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 
 import { Category } from '../models/category.model';
 // import { BaseApi } from '../../../shared/core/base-api';
@@ -12,7 +12,7 @@ export class CategoriesService {
     categories: AngularFireList<Category>;
     categoriesRef: Observable<any>;
 
-    constructor( public http: Http, public db: AngularFireDatabase ) {
+    constructor( public http: HttpClient, public db: AngularFireDatabase ) {
         // super(http, db);
         this.categories = db.list('categories');
         this.categoriesRef = db.list('categories').valueChanges();
@@ -39,9 +39,10 @@ export class CategoriesService {
         return catRef.valueChanges();
     }
 
-    getCategoryById(id: number): Observable<any> { // : Observable<Category>
+    getCategoryByKey(key: string): Observable<any> { // : Observable<Category>
         // return this.get(`categories/${id}`);
-        let catId = id - 1;
-        return this.db.object(`categories/${catId}`).valueChanges();
+        // let catId = id - 1;
+        // console.log('id id id', catId);
+        return this.db.object(`categories/${key}`).valueChanges();
     }
 }

@@ -1,14 +1,14 @@
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 
 import { User } from '../models/user.model';
 // import { BaseApi } from '../core/base-api';
 
 @Injectable()
 export class UsersService {
-    constructor( public http: Http, public db: AngularFireDatabase ) {
+    constructor( public http: HttpClient, public db: AngularFireDatabase ) {
         // super(http, db);
     }
 

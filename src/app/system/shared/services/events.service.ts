@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 
 import { NPEvent } from './../models/event.model';
 // import { BaseApi } from './../../../shared/core/base-api';
@@ -12,7 +12,7 @@ export class EventsService {
     events: AngularFireList<NPEvent>;
     eventsRef: Observable<any>;
 
-    constructor( public http: Http, public db: AngularFireDatabase ) {
+    constructor( public http: HttpClient, public db: AngularFireDatabase ) {
         // super(http, db);
         this.events = db.list('events');
         this.eventsRef = db.list('events').valueChanges();

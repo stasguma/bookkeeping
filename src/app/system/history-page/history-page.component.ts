@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SharedModule } from './../../shared/shared.module';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 
 import { CategoriesService } from "./../shared/services/categories.service";

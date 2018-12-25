@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 
 import { Bill } from '../models/bill.model';
 // import { BaseApi } from '../../../shared/core/base-api';
@@ -12,7 +12,7 @@ export class BillService {
     bill: AngularFireObject<Bill>;
     billRef: Observable<any>;
 
-    constructor( public http: Http, public db: AngularFireDatabase ) {
+    constructor( public http: HttpClient, public db: AngularFireDatabase ) {
         // super(http, db);
         this.bill = db.object('bill');
         this.billRef = db.object('bill').valueChanges();
@@ -32,8 +32,7 @@ export class BillService {
 
     getCurrency(base: string = "EUR"): Observable<any> {
         return this.http
-          .get(`https://api.fixer.io/latest?base=${base}`)
-          // .get(`http://data.fixer.io/api/latest?access_key=e2284628c406198445c817a4fa3725f8`)
-          .map((res: Response) => res.json());
+          .get(`https://api.exchangeratesapi.io/api/latest?base=${base}`);
+          // .get(`http://data.fixer.io/api/latest?access_key=e2284628c406198445c817a4fa3725f8&base=${base}`);
     }
 }

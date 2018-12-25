@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
-import { Observable } from "rxjs/Observable";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class BaseApi {
@@ -8,7 +8,7 @@ export class BaseApi {
     // private baseUrl = 'https://bookkeeping-b29d1.firebaseio.com/';
     // private baseUrl = 'https://console.firebase.google.com/project/bookkeeping-b29d1/database/bookkeeping-b29d1/data/';
 
-    constructor(public http: Http) {}
+    constructor(public http: HttpClient) {}
 
     private getUrl(url: string = ""): string {
         return this.baseUrl + url;
@@ -16,19 +16,16 @@ export class BaseApi {
 
     public get(url: string = ""): Observable<any> {
         return this.http
-            .get(this.getUrl(url))
-            .map((res: Response) => res.json());
+            .get(this.getUrl(url));
     }
 
     public post(url: string = "", data: any = {}): Observable<any> {
         return this.http
-            .post(this.getUrl(url), data)
-            .map((res: Response) => res.json());
+            .post(this.getUrl(url), data);
     }
 
     public put(url: string = "", data: any = {}): Observable<any> {
         return this.http
-            .put(this.getUrl(url), data)
-            .map((res: Response) => res.json());
+            .put(this.getUrl(url), data);
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { CategoriesService } from "./../../shared/services/categories.service";
 import { EventsService } from "./../../shared/services/events.service";
@@ -22,6 +22,7 @@ export class HistoryDetailComponent implements OnInit, OnDestroy {
     sub1: Subscription;
     sub2: Subscription;
     category: Category;
+    categories;
     filteredEvent: NPEvent[];
     event: NPEvent;
     events: NPEvent[];
@@ -40,9 +41,15 @@ export class HistoryDetailComponent implements OnInit, OnDestroy {
 
                     })
                     .mergeMap((event: NPEvent[]) => {
-                        this.event = this.filteredEvent[0];
+                        this.event = event[0];
                         console.log('event', this.event);
-                        return this.categoriesService.getCategoryById(this.event.category);
+                        return this.categoriesService.getCategories();
+                        // const cat = this.categories.filter((c) => c.id === this.event.category);
+                        // return this.categoriesService.getCategoryByKey(cat.key);
+                    })
+                    .mergeMap((categories: Category[]) => {
+                        const cat = categories.filter((c) => c.id === this.event.category);
+                        return this.categoriesService.getCategoryByKey(cat[0].key)
                     })
                     .subscribe((category: Category) => {
                         console.log('category', category);

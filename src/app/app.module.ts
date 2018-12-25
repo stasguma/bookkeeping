@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+// import { HttpClientModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
@@ -23,7 +24,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     imports: [
         AuthModule,
         BrowserModule,
-        HttpModule,
+        HttpClientModule,
         AppRoutingModule,
         // SystemModule,
         BrowserAnimationsModule,
