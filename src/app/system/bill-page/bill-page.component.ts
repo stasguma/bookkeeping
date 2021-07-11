@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { BillService } from '../shared/services/bill.service';
 import { Bill } from '../shared/models/bill.model';
@@ -21,7 +22,7 @@ export class BillPageComponent implements OnInit, OnDestroy {
     constructor(private billService: BillService) { }
 
     ngOnInit() {
-        this.sub1 = Observable.combineLatest(
+        this.sub1 = combineLatest(
             this.billService.getBill(),
             this.billService.getCurrency()
         ).subscribe( (data: [Bill, any]) => {
@@ -34,7 +35,7 @@ export class BillPageComponent implements OnInit, OnDestroy {
     onRefresh() {
         this.isLoaded = false;
         this.sub2 = this.billService.getCurrency()
-        .delay(1000)
+        .pipe(delay(1000))
         .subscribe( (currency: any) => {
             this.currency = currency;
             this.isLoaded = true;

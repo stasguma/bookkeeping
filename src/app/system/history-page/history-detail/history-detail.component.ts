@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from 'rxjs';
+import { map, mergeMap  } from 'rxjs/operators';
 
 import { CategoriesService } from "./../../shared/services/categories.service";
 import { EventsService } from "./../../shared/services/events.service";
@@ -34,23 +35,26 @@ export class HistoryDetailComponent implements OnInit, OnDestroy {
                 this.events = events;
 
                 this.sub2 = this.route.params
-                    .map((params: Params) => {
-                        return this.filteredEvent = this.events.filter((e) => {
-                            return e.id === +params['id']
-                        });
+                    .pipe(
+                        map((params: Params) => {
+                            return this.filteredEvent = this.events.filter((e) => {
+                                return e.id === +params['id']
+                            });
 
-                    })
-                    .mergeMap((event: NPEvent[]) => {
-                        this.event = event[0];
-                        console.log('event', this.event);
-                        return this.categoriesService.getCategories();
-                        // const cat = this.categories.filter((c) => c.id === this.event.category);
-                        // return this.categoriesService.getCategoryByKey(cat.key);
-                    })
-                    .mergeMap((categories: Category[]) => {
-                        const cat = categories.filter((c) => c.id === this.event.category);
-                        return this.categoriesService.getCategoryByKey(cat[0].key)
-                    })
+                        }),
+                        mergeMap((event: NPEvent[]) => {
+                            this.event = event[0];
+                            console.log('event', this.event);
+                            return this.categoriesService.getCategories();
+                            // const cat = this.categories.filter((c) => c.id === this.event.category);
+                            // return this.categoriesService.getCategoryByKey(cat.key);
+                        }),
+                        mergeMap((categories: Category[]) => {
+                            const cat = categories.filter((c) => c.id === this.event.category);
+                            return this.categoriesService.getCategoryByKey(cat[0].key)
+                        })
+
+                    )
                     .subscribe((category: Category) => {
                         console.log('category', category);
                         this.category = category;

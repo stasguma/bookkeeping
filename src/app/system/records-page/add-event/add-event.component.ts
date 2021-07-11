@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { mergeMap, first } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { Category } from './../../shared/models/category.model';
@@ -61,7 +62,8 @@ export class AddEventComponent implements OnInit, OnDestroy {
             moment().format('DD.MM.YYYY HH:mm:ss'), description, id, catName, key
         );
 
-        this.sub1 = this.billService.getBill().first()
+        this.sub1 = this.billService.getBill()
+            .pipe(first())
             .subscribe( (bill: Bill) => {
                 let value = 0;
 
@@ -77,7 +79,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
                 }
 
                 this.sub2 = this.billService.updateBill({value, currency: bill.currency})
-                    .mergeMap(() => this.eventsService.addEvent(event))
+                    .pipe(mergeMap(() => this.eventsService.addEvent(event)))
                     .subscribe(() => {
                         form.setValue({
                             amount: 0,
