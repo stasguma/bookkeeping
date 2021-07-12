@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 
 import { Bill } from '../models/bill.model';
@@ -32,7 +33,7 @@ export class BillService {
 
     getCurrency(base: string = "EUR"): Observable<any> {
         return this.http
-          .get(`https://api.exchangeratesapi.io/api/latest?base=${base}`);
+          .get(`http://api.exchangeratesapi.io/v1/latest?access_key=${environment.CURRENCY_API_ACCESS_KEY}&base=${base}`);
           // .get(`http://data.fixer.io/api/latest?access_key=e2284628c406198445c817a4fa3725f8&base=${base}`);
     }
 }

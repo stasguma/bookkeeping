@@ -5,7 +5,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
-    { path: 'system', loadChildren: './system/system.module#SystemModule' },
+    { path: 'system', loadChildren: () => import('./system/system.module').then(m => m.SystemModule) },
     { path: '**', component: NotFoundComponent }
 ];
 

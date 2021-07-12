@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
 import { BillService } from './../shared/services/bill.service';
 import { CategoriesService } from './../shared/services/categories.service';
@@ -27,7 +27,7 @@ export class PlanningPageComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.sub1 = Observable.combineLatest(
+        this.sub1 = combineLatest(
             this.billService.getBill(),
             this.categoriesService.getCategories(),
             this.eventsService.getEvents()

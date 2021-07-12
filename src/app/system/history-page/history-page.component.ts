@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SharedModule } from './../../shared/shared.module';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import * as moment from 'moment';
 
 import { CategoriesService } from "./../shared/services/categories.service";
@@ -31,7 +30,7 @@ export class HistoryPageComponent implements OnInit, OnDestroy {
     isFilterVisible = false;
 
     ngOnInit() {
-        this.sub1 = Observable.combineLatest(
+        this.sub1 = combineLatest(
             this.categoriesService.getCategories(),
             this.eventsService.getEvents()
         ).subscribe( (data: [ Category[], NPEvent[] ]) => {
@@ -80,7 +79,7 @@ export class HistoryPageComponent implements OnInit, OnDestroy {
         this.calculateChartData();
     }
 
-    onFilterApply(filterData) {
+    onFilterApply(filterData: any) {
         this.toggleFilterVisibility(false);
         this.setOriginalEvents();
 

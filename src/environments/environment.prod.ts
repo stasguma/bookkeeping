@@ -7,5 +7,6 @@ export const environment = {
         projectId: "bookkeeping-b29d1",
         storageBucket: "bookkeeping-b29d1.appspot.com",
         messagingSenderId: "616650139828"
-    }
+    },
+    CURRENCY_API_ACCESS_KEY: '66cefc53cca41979defcfa79b646ab37'
 };
