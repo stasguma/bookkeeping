@@ -28,7 +28,7 @@
     "@swimlane/ngx-charts": "^14.0.0",
     "core-js": "^2.4.1",
     "firebase": "^8.7.1",
-    "firebase-tools": "^7.16.2",
+    "firebase-tools": "^9.16.0",
     "moment": "^2.20.1",
     "rxjs": "^6.6.7",
     "rxjs-tslint": "^0.1.6",
