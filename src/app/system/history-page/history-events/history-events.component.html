@@ -44,7 +44,7 @@
                             <tr *ngFor="let e of events | npFilter:searchValue:searchField; let idx = index">
                                 <th scope="row">{{ idx + 1 }}</th>
                                 <td>{{ e.amount | number: '1.2' }}</td>
-                                <td>{{ e.date | npMoment: 'DD.MM.YYYY HH:mm:ss' }}</td>
+                                <td>{{ e.date | npMoment: 'DD.MM.YYYY' }}</td>
                                 <td>{{ e.catName }}</td>
                                 <td>
                                     <span [ngClass]="getEventClass(e)">

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 
 import { Bill } from '../models/bill.model';
 // import { BaseApi } from '../../../shared/core/base-api';
@@ -14,21 +14,17 @@ export class BillService {
     billRef: Observable<any>;
 
     constructor( public http: HttpClient, public db: AngularFireDatabase ) {
-        // super(http, db);
         this.bill = db.object('bill');
         this.billRef = db.object('bill').valueChanges();
     }
 
-    getBill(): Observable<any> { //: Observable<Bill>
-        // return this.get('bill');
+    getBill(): Observable<Bill> {
         return this.billRef;
     }
 
-    updateBill(bill: Bill): Observable<any> { // : Observable<Bill>
-        // return this.put('bill', bill);
+    updateBill(bill: Bill): Observable<Bill> {
         this.bill.update(bill);
-
-        return this.billRef;
+        return this.bill.valueChanges();
     }
 
     getCurrency(base: string = "EUR"): Observable<any> {

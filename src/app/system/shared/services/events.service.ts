@@ -20,6 +20,7 @@ export class EventsService {
 
     addEvent(event: NPEvent): Observable<any> { // : Observable<NPEvent[]>
         // return this.post('events', event);
+        console.log('addEvent');
         const eventRef = this.events.push(event);
         const evt =  this.db.object('events/' + eventRef.key);
         evt.update({key: eventRef.key});

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { mergeMap, first } from 'rxjs/operators';
-import * as moment from 'moment';
+import { mergeMap, first, switchMap, map } from 'rxjs/operators';
 
 import { Category } from './../../shared/models/category.model';
 import { NPEvent } from './../../shared/models/event.model';
@@ -25,8 +24,8 @@ export class AddEventComponent implements OnInit, OnDestroy {
         {type: 'outcome', label: 'Расход'}
     ];
     message: Message;
-    sub1: Subscription;
-    sub2: Subscription;
+    sub1$: Subscription;
+    sub2$: Subscription;
 
     constructor(
         private eventsService: EventsService,
@@ -54,49 +53,61 @@ export class AddEventComponent implements OnInit, OnDestroy {
         }
 
         const id: number = this.events.length + 1,
-              catName = null,
-              key = null;
+        catName = null,
+        key = null;
 
         const event = new NPEvent(
             type, amount, +category,
-            moment().format('DD.MM.YYYY HH:mm:ss'), description, id, catName, key
+            Date.now(), description, id, catName, key
         );
 
-        this.sub1 = this.billService.getBill()
-            .pipe(first())
-            .subscribe( (bill: Bill) => {
-                let value = 0;
+        console.log('this.sub1$', this.sub1$);
+        this.sub1$ = this.billService.getBill()
+            .pipe(
+                first(),
+                map((bill: Bill) => {
+                    let value = 0;
 
-                if (type === 'outcome') {
-                    if (amount > bill.value) {
-                        this.showMessage(`На счету недостаточно средств. Вам нехватает ${amount - bill.value}`);
-                        return;
+                    if (type === 'outcome') {
+                        if (amount > bill.value) {
+                            this.showMessage(`На счету недостаточно средств. Вам нехватает ${amount - bill.value}`);
+                            return;
+                        } else {
+                            value = bill.value - amount;
+                        }
                     } else {
-                        value = bill.value - amount;
+                        value = bill.value + amount;
                     }
-                } else {
-                    value = bill.value + amount;
-                }
 
-                this.sub2 = this.billService.updateBill({value, currency: bill.currency})
-                    .pipe(mergeMap(() => this.eventsService.addEvent(event)))
-                    .subscribe(() => {
-                        form.setValue({
-                            amount: 0,
-                            description: " ",
-                            category: 1,
-                            type: 'outcome'
-                        });
-                    });
+                    return {value, currency: bill.currency};
+                }),
+                switchMap(({value, currency}) => {
+                    return this.billService.updateBill({value, currency})
+                        .pipe(
+                            first(),
+                            switchMap(() => this.eventsService.addEvent(event)),
+                        )
+                })
+            )
+            .subscribe(() => {
+                console.log('End');
+                form.reset();
+                form.setValue({
+                    amount: 1,
+                    description: "",
+                    category: 1,
+                    type: 'outcome'
+                });
             });
+        console.log('this.sub1$', this.sub1$);
     }
 
     ngOnDestroy() {
-        if (this.sub1) {
-            this.sub1.unsubscribe();
+        if (this.sub1$) {
+            this.sub1$.unsubscribe();
         }
-        if (this.sub2) {
-            this.sub2.unsubscribe();
+        if (this.sub2$) {
+            this.sub2$.unsubscribe();
         }
     }
 

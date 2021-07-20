@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { Category } from './../../shared/models/category.model';
 import { NPEvent } from './../../shared/models/event.model';
-import { MomentPipe } from './../../shared/pipes/moment.pipe';
 
 @Component({
     selector: 'np-history-events',

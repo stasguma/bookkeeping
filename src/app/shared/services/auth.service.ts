@@ -1,6 +1,6 @@
 export class AuthService {
 
-    private isAuthenticated = false;
+    private isAuthenticated = !!window.localStorage.getItem('user');
 
     login() {
         this.isAuthenticated =  true;
