@@ -27,12 +27,10 @@ export class CategoriesService {
     }
 
     getCategories(): Observable<any> { // : Observable<Category[]>
-        // return this.get('categories');
         return this.categoriesRef;
     }
 
     updateCategory(category): Observable<any> { // : Observable<Category>
-        // return this.put(`categories/${category.id}`, category);
         let catId = category.key ? category.key : category.id - 1;
         let catRef = this.db.object(`categories/${catId}`);
         catRef.update(category);
@@ -40,9 +38,6 @@ export class CategoriesService {
     }
 
     getCategoryByKey(key: string): Observable<any> { // : Observable<Category>
-        // return this.get(`categories/${id}`);
-        // let catId = id - 1;
-        // console.log('id id id', catId);
         return this.db.object(`categories/${key}`).valueChanges();
     }
 }

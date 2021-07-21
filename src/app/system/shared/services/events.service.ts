@@ -13,14 +13,11 @@ export class EventsService {
     eventsRef: Observable<any>;
 
     constructor( public http: HttpClient, public db: AngularFireDatabase ) {
-        // super(http, db);
         this.events = db.list('events');
         this.eventsRef = db.list('events').valueChanges();
     }
 
     addEvent(event: NPEvent): Observable<any> { // : Observable<NPEvent[]>
-        // return this.post('events', event);
-        console.log('addEvent');
         const eventRef = this.events.push(event);
         const evt =  this.db.object('events/' + eventRef.key);
         evt.update({key: eventRef.key});
@@ -28,12 +25,10 @@ export class EventsService {
     }
 
     getEvents(): Observable<any> { // : Observable<NPEvent[]>
-        // return this.get('events');
         return this.eventsRef;
     }
 
     getEventById(id: string): Observable<any> { //: Observable<NPEvent>
-        // return this.get(`events/${id}`);
         let eventId = +id - 1;
         return this.db.object(`events/${eventId}`).valueChanges();
     }

@@ -94,7 +94,7 @@ export class HistoryPageComponent implements OnInit, OnDestroy {
                 return filterData.categories.indexOf( e.category.toString() ) !== -1;
             })
             .filter(e => {
-                const momentDate = moment(e.date, 'DD.MM.YYYY HH:mm:ss')
+                const momentDate = moment(e.date);
                 return momentDate.isBetween(startPeriod, endPeriod);
             });
 

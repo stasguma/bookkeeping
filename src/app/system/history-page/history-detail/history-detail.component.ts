@@ -44,10 +44,7 @@ export class HistoryDetailComponent implements OnInit, OnDestroy {
                         }),
                         mergeMap((event: NPEvent[]) => {
                             this.event = event[0];
-                            console.log('event', this.event);
                             return this.categoriesService.getCategories();
-                            // const cat = this.categories.filter((c) => c.id === this.event.category);
-                            // return this.categoriesService.getCategoryByKey(cat.key);
                         }),
                         mergeMap((categories: Category[]) => {
                             const cat = categories.filter((c) => c.id === this.event.category);
@@ -56,7 +53,6 @@ export class HistoryDetailComponent implements OnInit, OnDestroy {
 
                     )
                     .subscribe((category: Category) => {
-                        console.log('category', category);
                         this.category = category;
                         this.isLoaded = true;
                     });

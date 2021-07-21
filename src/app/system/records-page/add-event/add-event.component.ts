@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { mergeMap, first, switchMap, map } from 'rxjs/operators';
 
 import { Category } from './../../shared/models/category.model';
@@ -61,7 +61,6 @@ export class AddEventComponent implements OnInit, OnDestroy {
             Date.now(), description, id, catName, key
         );
 
-        console.log('this.sub1$', this.sub1$);
         this.sub1$ = this.billService.getBill()
             .pipe(
                 first(),
@@ -71,7 +70,7 @@ export class AddEventComponent implements OnInit, OnDestroy {
                     if (type === 'outcome') {
                         if (amount > bill.value) {
                             this.showMessage(`На счету недостаточно средств. Вам нехватает ${amount - bill.value}`);
-                            return;
+                            throw new Error(`На счету недостаточно средств. Вам нехватает ${amount - bill.value}`);
                         } else {
                             value = bill.value - amount;
                         }
@@ -89,17 +88,18 @@ export class AddEventComponent implements OnInit, OnDestroy {
                         )
                 })
             )
-            .subscribe(() => {
-                console.log('End');
-                form.reset();
-                form.setValue({
-                    amount: 1,
-                    description: "",
-                    category: 1,
-                    type: 'outcome'
-                });
-            });
-        console.log('this.sub1$', this.sub1$);
+            .subscribe(
+                () => {
+                    form.reset();
+                    form.setValue({
+                        amount: 1,
+                        description: "",
+                        category: 1,
+                        type: 'outcome'
+                    });
+                },
+                error => console.log('error', error)
+            );
     }
 
     ngOnDestroy() {

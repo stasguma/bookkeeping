@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import * as moment from 'moment';
 
 @Pipe({
     name: "npFilter"
@@ -24,6 +25,9 @@ export class FilterPipe implements PipeTransform {
                 t[field] = t['catName'];
             }
 
+            if (field === 'date') {
+                t[field] = moment(+t[field]).format('DD.MM.YYYY');
+            }
             return t[field].toLowerCase().indexOf(value.toLowerCase()) !== -1;
         });
     }
