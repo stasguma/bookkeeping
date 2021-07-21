@@ -17,10 +17,10 @@ export class BillCardComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        const { rates } = this.currency;
+        const { conversion_rates } = this.currency;
 
-        this.dollar = rates['USD'] * this.bill.value;
-        this.gbp = rates['GBP'] * this.bill.value;
+        this.dollar = conversion_rates['USD'] * this.bill.value;
+        this.gbp = conversion_rates['GBP'] * this.bill.value;
     }
 
 }

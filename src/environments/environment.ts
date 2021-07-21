@@ -13,5 +13,5 @@ export const environment = {
         storageBucket: "bookkeeping-b29d1.appspot.com",
         messagingSenderId: "616650139828"
     },
-    CURRENCY_API_ACCESS_KEY: '66cefc53cca41979defcfa79b646ab37'
+    CURRENCY_API_ACCESS_KEY: 'bef69441ee7eccd26379c74c'
 };
